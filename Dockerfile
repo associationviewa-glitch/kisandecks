@@ -2,19 +2,21 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Install deps
+# Copy package files
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
-# Copy source
+# Copy source code
 COPY . .
 
-# Build frontend (VERY IMPORTANT)
+# Build frontend (creates dist/)
 RUN npm run build
 
-ENV NODE_ENV=production
+# Cloud Run settings
 ENV PORT=8080
-
 EXPOSE 8080
 
+# Start server
 CMD ["node", "server.js"]
