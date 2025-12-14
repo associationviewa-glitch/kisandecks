@@ -1,0 +1,54 @@
+KISANDECKS - GOOGLE CLOUD RUN DEPLOYMENT GUIDE
+==============================================
+
+REQUIRED FILES:
+- Dockerfile
+- server.js
+- package.json
+- cloudbuild.yaml
+- .dockerignore
+
+ENVIRONMENT VARIABLES TO SET IN GOOGLE CLOUD:
+- DATABASE_URL = Your PostgreSQL connection string
+- OPENWEATHER_API_KEY = Your OpenWeather API key
+- SESSION_SECRET = A secure random string for sessions
+- NODE_ENV = production
+
+DEPLOYMENT STEPS:
+
+Option 1: Using Google Cloud Console
+-------------------------------------
+1. Go to Google Cloud Console
+2. Enable Cloud Run API and Container Registry
+3. Open Cloud Shell
+4. Upload your project files
+5. Run: gcloud builds submit --config cloudbuild.yaml
+6. Set environment variables in Cloud Run console
+
+Option 2: Using gcloud CLI locally
+----------------------------------
+1. Install Google Cloud SDK
+2. Login: gcloud auth login
+3. Set project: gcloud config set project YOUR_PROJECT_ID
+4. Enable APIs:
+   gcloud services enable run.googleapis.com
+   gcloud services enable cloudbuild.googleapis.com
+5. Deploy: gcloud builds submit --config cloudbuild.yaml
+
+DATABASE SETUP:
+---------------
+1. Create a Cloud SQL PostgreSQL instance OR use any PostgreSQL service
+2. Get the connection string
+3. Add DATABASE_URL to Cloud Run environment variables
+
+AFTER DEPLOYMENT:
+-----------------
+Your app will be available at: https://kisandecks-XXXXX-XX.run.app
+
+To update: Just run the build command again
+
+COSTS (Approximate):
+-------------------
+- Cloud Run: Pay per use (free tier available)
+- Cloud SQL: ~$7/month for smallest instance
+- Container Registry: ~$0.10/GB storage
