@@ -1,19 +1,22 @@
-const express = require("express");
-const path = require("path");
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
-
-// Cloud Run uses PORT env variable
 const PORT = process.env.PORT || 8080;
 
-// Serve frontend build files
+// Fix __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static frontend
 app.use(express.static(path.join(__dirname, "dist")));
 
-// Always return index.html (SPA support)
+// SPA fallback
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ KisanDecks running on port ${PORT}`);
+  console.log(`KisanDecks running on port ${PORT}`);
 });
